@@ -11,37 +11,30 @@ To run this program, you can use Remix, an online Solidity IDE. To get started, 
 
 Once you are on the Remix website, create a new file by clicking on the "+" icon in the left-hand sidebar. Save the file with a functionanderrors.sol extension (e.g., functionanderrors.sol). Copy and paste the following code into the file:
 
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.17;
 
-contract ErrorHandlingExample {
-    uint public num;
-    address public owner;
+contract FunctionandError {
+    uint256 public Num;
 
-    constructor() {
-        owner = msg.sender;
+    function RequireFunction(uint256 _number) external {
+        require(_number > 0, "Can't input Zero");
+
+        Num = _number;
     }
 
-    function setNum(uint _num) public {
-       
-        require(_num != 0, "Number cannot be zero");
+    function AssertFunction(uint256 _number) external {
+        assert(_number != 23);
 
-        num = _num;
+        Num = _number;
     }
 
-    function assertExample(uint _num) public view returns (uint) {
-       
-        assert(_num > 0);
-        return _num;
-    }
-
-    function revertExample() public view returns (string memory) {
-        
-        if (msg.sender != owner) {
-            revert("Only the owner can call this function");
+    function RevertFunction(uint256 _number) external {
+        if (_number == 666) {
+            revert("Unsafe input, reverting transaction");
         }
 
-        return "Success";
+        Num = _number;
     }
 }
 
