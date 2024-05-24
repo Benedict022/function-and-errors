@@ -11,31 +11,47 @@ To run this program, you can use Remix, an online Solidity IDE. To get started, 
 
 Once you are on the Remix website, create a new file by clicking on the "+" icon in the left-hand sidebar. Save the file with a functionanderrors.sol extension (e.g., functionanderrors.sol). Copy and paste the following code into the file:
 
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.17;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.18;
 
-contract FunctionandError {
-    uint256 public Num;
+contract Holocoin {
 
-    function RequireFunction(uint256 _number) external {
-        require(_number > 0, "Can't input Zero");
+    // public variables
+    string public TokenName = "ITLOG";
+    string public TokenSymbol = "ITG";
+    uint256 public supply = 0;
 
-        Num = _number;
+    // mapping variable
+    mapping(address => uint) public balances;
+
+    // mint function
+    function mint(address _address, uint _value) public {
+        supply == balances[_address];
+
+        require(_value > 0, "Value must be greater than 0");
+
+        supply += _value;
+        balances[_address] += _value;
+        
+        assert(balances[_address] == supply); // Check for overflows or underflows
+        supply == 0; // Reset the supply
     }
 
-    function AssertFunction(uint256 _number) external {
-        assert(_number != 23);
+    // burn function
+    function burn(address _address, uint _value) public {
+        supply == balances[_address];
 
-        Num = _number;
-    }
-
-    function RevertFunction(uint256 _number) external {
-        if (_number == 666) {
-            revert("Unsafe input, reverting transaction");
+        if (supply < _value) {
+            revert("Not enough balance to burn");
         }
+        
+        supply -= _value;
+        balances[_address] -= _value;
 
-        Num = _number;
+        assert(balances[_address] == supply); // Check for overflows or underflows
+        supply == 0; // Reset the supply
     }
+
 }
 
 # AUTHOR
